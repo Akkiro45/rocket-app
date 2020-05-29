@@ -1,8 +1,8 @@
 import AsyncStorage from '@react-native-community/async-storage';
 
 import axios from '../../../axios';
-import { SET_LINKS, ADD_LINK, SET_CURR } from './actionTypes';
-import { startLoading, stopLoading, setError, resetError, switchOp } from './index';
+import { SET_LINKS, ADD_LINK, SET_CURR, SET_HIDE } from './actionTypes';
+import { startLoading, stopLoading, setError, resetError, switchOp, errorExtractor } from './index';
 
 export const addLink = (link) => {
   return {
@@ -22,6 +22,13 @@ export const setCurr = (id) => {
   return {
     type: SET_CURR,
     id
+  }
+}
+
+export const setHide = (hide) => {
+  return {
+    type: SET_HIDE,
+    hide
   }
 }
 
@@ -50,14 +57,7 @@ export const onAddLink = (token, data, navigation) => {
         }
       }
     } catch(error) {
-      dispatch(stopLoading());
-      if(error.response) {
-        if(error.response.data.status === 'error') {
-          dispatch(setError(error.response.data.error.msg));
-        }
-      } else {
-        dispatch(setError('Something went wrong!'));
-      }
+      errorExtractor(dispatch, error);
     }
   }
 }
@@ -83,14 +83,7 @@ export const onRemoveLink = (token, id, links) => {
         }
       }
     } catch(error) {
-      dispatch(stopLoading());
-      if(error.response) {
-        if(error.response.data.status === 'error') {
-          dispatch(setError(error.response.data.error.msg));
-        }
-      } else {
-        dispatch(setError('Something went wrong!'));
-      }
+      errorExtractor(dispatch, error);
     }
   }
 }
@@ -117,14 +110,40 @@ export const fetchLinks = (token, navigation) => {
         }
       }
     } catch(error) {
-      dispatch(stopLoading());
-      if(error.response) {
-        if(error.response.data.status === 'error') {
-          dispatch(setError(error.response.data.error.msg));
+      errorExtractor(dispatch, error);
+    }
+  }
+}
+
+export const editLink = (token, id, type, value, links) => {
+  return async (dispatch) => {
+    dispatch(setCurr(id));
+    dispatch(resetError());
+    dispatch(startLoading());
+    const headers = {
+      'x-auth': token
+    }
+    const data = {
+      id,
+      type,
+      value
+    }
+    try {
+      const response = await axios.patch(`/link/edit`, data, { headers });
+      if(response.data.status === 'ok') {
+        const linkIndex = links.findIndex(link => link._id === id);
+        if(linkIndex !== -1) {
+          links[linkIndex][type] = value;
         }
+        dispatch(setLinks(links));
+        AsyncStorage.setItem('links', JSON.stringify(links));
+        dispatch(stopLoading());
+        dispatch(setCurr(null));
       } else {
-        dispatch(setError('Something went wrong!'));
+        throw new Error('Error!');
       }
+    } catch(error) {
+      errorExtractor(dispatch, error);
     }
   }
 }

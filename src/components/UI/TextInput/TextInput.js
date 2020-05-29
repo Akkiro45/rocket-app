@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, TextInput } from 'react-native';
+import { TextInput } from 'react-native';
 
 import getColor from '../../../util/colors';
 
@@ -13,6 +13,7 @@ const textInput = (props) => {
       placeholder={props.placeholder}
       selectTextOnFocus={true}
       selectionColor={getColor('DARK').subPrimary}
+      secureTextEntry={props.secureTextEntry}
       style={{
         width: '100%',
         height: 40,

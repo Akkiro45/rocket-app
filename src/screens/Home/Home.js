@@ -8,9 +8,9 @@ import Icon3 from 'react-native-vector-icons/dist/MaterialCommunityIcons';
 import ShareMenu from 'react-native-share-menu';
 
 import Text from '../../components/UI/Text/Text';
-import { SETTING, ADD, ROCKET, MORE_HORIZONTAL, SORT_ASC, SORT_DESC } from '../../util/icons';
+import { SETTING, ADD, ROCKET, MORE_HORIZONTAL, SORT_ASC, SORT_DESC, EYE_OFF } from '../../util/icons';
 import { capitalize, webLink } from '../../util/util';
-import { resetError, setCurr, fetchLinks } from '../../store/actions/index'; 
+import { resetError, setCurr, fetchLinks, setHide } from '../../store/actions/index'; 
 import filter from '../../util/filter';
 import TextInput from '../../components/UI/TextInput/TextInput';
 import Picker from '../../components/UI/Picker/Picker';
@@ -27,7 +27,7 @@ class Home extends Component {
   onChangeOrder = () => {
     this.setState(prevState => {
       return { order: !prevState.order };
-    })
+    });
   }
   onRefresh = () => {
     this.props.onFetchLinks(this.props.token);
@@ -65,7 +65,7 @@ class Home extends Component {
     this._unsubscribe2();
   }
   UNSAFE_componentWillReceiveProps(nextProps) {
-    if(this.props.links !== nextProps.links) {
+    if(this.props.links !== nextProps.links || this.props.curr !== nextProps.curr) {
       this.setState({ refreshing: false });
       this.props.onResetError();
     }
@@ -89,12 +89,6 @@ class Home extends Component {
           <Text text={webLink} type='h6' style={{ fontSize: 12, color: this.props.theme.primary }} />
           <Text text=' to access links in PC!' type='h6' style={{ fontSize: 13 }} />
         </View>
-        {/* <TouchableOpacity onPress={() => this.props.navigation.push('AddLink', { link: '' })} >
-          <View style={{ alignItems: 'center', marginVertical: 20 }} >
-            <Icon1 name={ADD} color={this.props.theme.primary} size={40} />
-            <Text text='Add Link' type='h5' style={{ color: this.props.theme.primary }} />
-          </View>
-        </TouchableOpacity> */}
         <View style={{ width: '80%', marginTop: 10, height: 40, alignSelf: 'center', borderBottomColor: '#ccc', borderBottomWidth: 2, borderRadius: 5 }} >
           <Picker 
             items={groups}
@@ -110,6 +104,16 @@ class Home extends Component {
             placeholder='Search ...'
           />
         </View>
+        {!this.props.hide ? (
+          <TouchableOpacity onPress={() => this.props.onSetHide(true)} >
+            <View style={{ flexDirection: 'row', alignSelf: 'center', color: this.props.theme.primary, borderColor: this.props.theme.primary, borderWidth: 1, borderRadius: 5, padding: 5 }} >
+              <View>
+                <Text text='Hide' style={{ color: this.props.theme.primary, marginRight: 10 }} />
+              </View>
+              <Icon Home name={EYE_OFF} color={this.props.theme.primary} size={23} />
+            </View>
+          </TouchableOpacity>
+        ) : null}
       </View>
     );
     const footerComponent = (
@@ -138,7 +142,7 @@ class Home extends Component {
       ren = (
         <SafeAreaView>
           <FlatList 
-            data={filter(this.props.links, this.state.currGroup, this.state.search, this.state.order)}
+            data={filter(this.props.links, this.state.currGroup, this.state.search, this.state.order, this.props.hide)}
             renderItem={(link) => <LinkCard link={link} />}
             keyExtractor={link => link._id}
             refreshControl={
@@ -191,7 +195,9 @@ const mapStateToProps = state => {
     profile: state.auth.data,
     links: state.link.links,
     groups: state.link.groups,
-    token: state.auth.token
+    token: state.auth.token,
+    hide: state.link.hide,
+    curr: state.link.curr
   }
 }
 
@@ -199,7 +205,8 @@ const mapDispatchToProps = dispatch => {
   return {
     onResetError: () => dispatch(resetError()),
     onSetCurr: (id) => dispatch(setCurr(id)),
-    onFetchLinks: (token) => dispatch(fetchLinks(token))
+    onFetchLinks: (token) => dispatch(fetchLinks(token)),
+    onSetHide: (hide) => dispatch(setHide(hide))
   }
 }
 

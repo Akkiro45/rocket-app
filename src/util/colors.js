@@ -17,7 +17,7 @@ const getColor = (theme) => {
     primaryTextColor: '#ff7043',
     background: '#ffffff',
     spinner: '#ff8a65',
-    danger: '#ff0000',
+    danger: '#f44336',
     linkColor: '#2874ff'
   }
   const DARK_THEME = {
@@ -29,7 +29,7 @@ const getColor = (theme) => {
     primaryTextColor: '#ff7043',
     background: '#424242',
     spinner: '#ff8a65',
-    danger: '#ff0000',
+    danger: '#f44336',
     linkColor: '#2874ff'
   }
   if(theme === 'DARK') {

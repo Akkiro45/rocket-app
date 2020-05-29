@@ -12,6 +12,8 @@ export const MORE_HORIZONTAL = 'more-horizontal';
 export const DELETE = 'trash-2';
 export const CLIPBOARD = 'clipboard';
 export const EXTERNAL_LINK = 'external-link';
+export const EYE = 'eye';
+export const EYE_OFF = 'eye-off';
 
 // FontAwesome
 export const SHARE = 'share';

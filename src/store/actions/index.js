@@ -11,7 +11,8 @@ export {
 export {
   auth,
   autoSignin,
-  onSignout
+  onSignout,
+  checkPassword
 } from './auth';
 
 export {
@@ -28,5 +29,11 @@ export {
   setLinks,
   onRemoveLink,
   setCurr,
-  fetchLinks
+  fetchLinks,
+  setHide,
+  editLink
 } from './link';
+
+export {
+  errorExtractor
+} from './errorExtractor';

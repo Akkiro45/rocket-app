@@ -15,3 +15,4 @@ export const SET_THEME = 'SET_THEME';
 export const ADD_LINK = 'ADD_LINK';
 export const SET_LINKS = 'SET_LINKS';
 export const SET_CURR = 'SET_CURR';
+export const SET_HIDE = 'SET_HIDE';

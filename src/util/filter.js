@@ -1,6 +1,7 @@
 import { isEmty } from './util';
 
-const filter = (links, group, search, isAsec) => {
+const filter = (links, group, search, isAsec, hide) => {
+  links = links.filter(link => link.hide !== hide);
   var re = new RegExp(search, 'i');
   let links1 = [];
   let links2 = [];

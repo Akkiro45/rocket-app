@@ -1,9 +1,10 @@
-import { SET_LINKS, ADD_LINK, SET_CURR } from '../actions/actionTypes';
+import { SET_LINKS, ADD_LINK, SET_CURR, SET_HIDE } from '../actions/actionTypes';
 
 const initState = {
   links: [],
   groups: ['None'],
-  curr: null
+  curr: null,
+  hide: true
 }
 
 const reducer = (state=initState, action) => {
@@ -26,6 +27,7 @@ const reducer = (state=initState, action) => {
       return { ...state, links: action.links, groups };
     };
     case SET_CURR: return { ...state, curr: action.id };
+    case SET_HIDE: return { ...state, hide: action.hide };
     default: return state;
   }
 } 

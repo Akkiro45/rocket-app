@@ -7,8 +7,8 @@ import Icon2 from 'react-native-vector-icons/dist/FontAwesome';
 import { Dialog } from 'react-native-simple-dialogs';
 import Clipboard from '@react-native-community/clipboard';
 
-import { MORE_VERTICAL, DELETE, ROCKET, SHARE, CLIPBOARD, EXTERNAL_LINK } from '../../util/icons';
-import { onRemoveLink } from '../../store/actions/index';
+import { MORE_VERTICAL, DELETE, ROCKET, SHARE, CLIPBOARD, EYE_OFF, EXTERNAL_LINK } from '../../util/icons';
+import { onRemoveLink, editLink } from '../../store/actions/index';
 import Text from '../UI/Text/Text';
 
 class LinkCard extends Component {
@@ -60,6 +60,10 @@ class LinkCard extends Component {
       Clipboard.setString(link);
       ToastAndroid.show('Link copied to clipboard!', ToastAndroid.LONG);
     } catch(e) {}
+    this.setState({ showDialog: false });
+  }
+  onHide = (id) => {
+    this.props.onEditLink(this.props.token, id, 'hide', true, this.props.links);
     this.setState({ showDialog: false });
   }
   style = StyleSheet.create({
@@ -181,6 +185,16 @@ class LinkCard extends Component {
                 </View>
               </TouchableNativeFeedback>
             </View>
+            {this.props.link.item.hide ? null : (
+              <View style={{ width: '100%', height: 40, overflow: 'hidden' }} >
+                <TouchableNativeFeedback onPress={() => this.onHide(this.props.link.item._id)} >
+                  <View style={{ justifyContent: 'center', flexDirection: 'row', alignItems: 'center', flex: 1, borderColor: '#ccc', borderBottomWidth: 1 }} >
+                    <Text text='Hide' style={{ color: this.props.theme.primary, fontSize: 18 }} />
+                    <Icon name={EYE_OFF} size={25} color={this.props.theme.primary} style={{ marginHorizontal: 5 }} />
+                  </View>
+                </TouchableNativeFeedback>
+              </View>
+            ) }
             <View style={{ width: '100%', height: 40, overflow: 'hidden' }} >
               <TouchableNativeFeedback onPress={() => this.onRemoveLink(this.props.link.item._id)} >
                 <View style={{ justifyContent: 'center', flexDirection: 'row', alignItems: 'center', flex: 1 }} >
@@ -228,7 +242,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    onRemoveLink: (token, id, links) => dispatch(onRemoveLink(token, id, links))
+    onRemoveLink: (token, id, links) => dispatch(onRemoveLink(token, id, links)),
+    onEditLink: (token, id, type, value, links) => dispatch(editLink(token, id, type, value, links))
   }
 }
 

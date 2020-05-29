@@ -2,7 +2,7 @@ import AsyncStorage from '@react-native-community/async-storage';
 
 import axios from '../../../axios';
 import { AUTH_SUCCESS, SIGNOUT } from './actionTypes';
-import { startLoading, resetError, stopLoading, setError, resetSwitch, setLinks } from './index';
+import { startLoading, resetError, stopLoading, setError, resetSwitch, setLinks, setHide, errorExtractor } from './index';
 
 export const authSuccess = (data) => {
   return {
@@ -59,14 +59,7 @@ export const auth = (data, isSignin, navigation) => {
         }
       })
       .catch(error => {
-        dispatch(stopLoading());
-        if(error.response) {
-          if(error.response.data.status === 'error') {
-            dispatch(setError(error.response.data.error.msg));
-          }
-        } else {
-          dispatch(setError('Something went wrong!'));
-        }
+        errorExtractor(dispatch, error);
       });
   }
 }
@@ -86,4 +79,28 @@ export const autoSignin = () => {
       dispatch(signout());
     });
   }
+}
+
+export const checkPassword = (password, token) => {
+  return async (dispatch) => {
+    dispatch(startLoading());
+    const data = {
+      password
+    }
+    const headers = {
+      'x-auth': token
+    }
+    try {
+      const response = await axios.post('/user/check/password', data, { headers });
+      if(response.data.status === 'ok') {
+        dispatch(setHide(false));
+        dispatch(stopLoading());
+      } else {
+        dispatch(stopLoading());
+        dispatch(setError('Invalid password!'));
+      }
+    } catch(error) {
+      errorExtractor(dispatch, error);
+    }
+  }  
 }

@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import Icon from 'react-native-vector-icons/dist/Feather';
 import Icon1 from 'react-native-vector-icons/dist/Ionicons';
 import Clipboard from '@react-native-community/clipboard';
+import ToggleSwitch from 'toggle-switch-react-native';
 
 import { LEFT_ARROW, ROCKET, ALERT } from '../../util/icons';
 import { isEmty } from '../../util/util';
@@ -18,8 +19,14 @@ class AddLink extends Component {
   state = {
     currGroup: 'None', 
     link: '',
+    hide: false,
     group: '',
     error: null
+  }
+  onToggle = () => {
+    this.setState(prevState => {
+      return { hide: !prevState.hide };
+    });
   }
   onChangePickerValue = (val) => {
     this.setState({ currGroup: val, error: null });
@@ -35,7 +42,8 @@ class AddLink extends Component {
     } else {
       const data = {
         url: this.state.link,
-        group: this.state.currGroup === 'Add New' ? this.state.group : this.state.currGroup
+        group: this.state.currGroup === 'Add New' ? this.state.group : this.state.currGroup,
+        hide: this.state.hide
       }
       this.props.onAddLink(this.props.token, data, this.props.navigation);
     }
@@ -58,7 +66,7 @@ class AddLink extends Component {
     let grp = (
       <View style={{ flexDirection: 'row', height: 40 }} >
         <View style={{ width: '30%', paddingHorizontal: 10, height: '100%', justifyContent: 'center' }} >
-          <Text text='Tag :' numberOfLines={1} style={{ textAlign: 'left' }} />
+          <Text text='Tag' numberOfLines={1} style={{ textAlign: 'left' }} />
         </View>
         <View style={{ width: '69%', justifyContent: 'center', borderWidth: 1, borderColor: '#ccc', borderRadius: 5 }} >
           <Picker 
@@ -85,19 +93,31 @@ class AddLink extends Component {
           <View style={{ flex: 1,justifyContent: 'center', alignItems: 'center' }} >
             <Icon1 name={ROCKET} color={this.props.theme.primary} size={110} />
           </View>
-          <View style={{ flex: 1.5, width: '100%', justifyContent: 'center', alignItems: 'center' }} >
-            <View style={{ width: '80%', marginVertical: 10 }} >
+          <View style={{ flex: 1.7, width: '100%', justifyContent: 'center', alignItems: 'center' }} >
+            <View style={{ width: '80%', marginVertical: 8 }} >
               <TextInput 
                 placeholder='Paste link here'
                 onChangeText={(val) => this.onChangeText('link', val)}
                 value={this.state.link}  
               />
             </View>
-            <View style={{ width: '80%', marginVertical: 10 }} >
+            <View style={{ width: '80%', marginVertical: 8 }} >
               {grp}
             </View>
-            <TouchableOpacity onPress={() => { this.setState({ currGroup: 'None', group: '', link: '' }) }} >
-              <Text text='Reset' type='h6' style={{ fontSize: 16, color: this.props.theme.subPrimary, marginVertical: 10 }} />
+            <View style={{ width: '50%', marginVertical: 8, flexDirection: 'row', height: 35, alignItems: 'center' }} >
+              <View style={{ width: '60%' }} >
+                <Text text='Hide' />
+              </View>
+              <View style={{ width: '40%' }} >
+                <ToggleSwitch 
+                  isOn={this.state.hide}
+                  size="small"
+                  onToggle={this.onToggle}
+                />
+              </View>
+            </View>
+            <TouchableOpacity onPress={() => { this.setState({ currGroup: 'None', group: '', link: '', hide: false }) }} >
+              <Text text='reset' type='h6' style={{ fontSize: 16, color: this.props.theme.subPrimary, marginVertical: 10 }} />
             </TouchableOpacity>
           </View>
           <View style={{ flex: 1, width: '100%', justifyContent: 'center', alignItems: 'center' }} > 
