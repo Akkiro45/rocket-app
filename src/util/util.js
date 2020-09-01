@@ -1,4 +1,4 @@
-export const tagLine = 'Save once, Access anyware!';
+export const tagLine = 'Save once, Access anywhere!';
 
 export const webLink = 'https://rocket-linksaver.web.app';
 

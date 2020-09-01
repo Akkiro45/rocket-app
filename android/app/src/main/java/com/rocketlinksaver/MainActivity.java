@@ -1,4 +1,4 @@
-package com.rocket;
+package com.rocketlinksaver;
 
 import com.facebook.react.ReactActivity;
 
