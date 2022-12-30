@@ -45,4 +45,15 @@ allprojects {
         jcenter()
         maven { url 'https://www.jitpack.io' }
     }
+    subprojects {
+        afterEvaluate {
+          project ->
+            if (project.hasProperty("android")) {
+                android {
+                    compileSdkVersion = 32
+                    buildToolsVersion = "28.0.3"
+                }
+            }
+        }
+    }
 }
