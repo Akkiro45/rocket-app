@@ -7,12 +7,22 @@
     "ios": "react-native run-ios",
     "start": "react-native start",
     "test": "jest",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "bundle-android": "react-native bundle --platform android --dev false --entry-file index.js --bundle-output android/app/src/main/assets/index.android.bundle --assets-dest android/app/src/main/res",
+    "remove-bundle-files": "rm -rf ./android/app/src/main/assets/index.android.bundle ./android/app/src/main/res/drawable-* ./android/app/src/main/res/raw/app.json",
+    "clean-gradle": "cd android && ./gradlew clean",
+    "bundle-release": "cd android && ./gradlew bundleRelease",
+    "test-release-android": "yarn bundle-android && yarn remove-bundle-files && yarn clean-gradle && yarn android --variant=release",
+    "store-release-android": "yarn bundle-android && yarn remove-bundle-files && yarn clean-gradle && yarn bundle-release"
   },
   "dependencies": {
     "@react-native-community/async-storage": "^1.9.0",
     "@react-native-community/clipboard": "^1.2.1",
     "@react-native-community/masked-view": "^0.1.7",
+    "@react-native-firebase/analytics": "^16.5.0",
+    "@react-native-firebase/app": "^16.5.0",
+    "@react-native-firebase/crashlytics": "^16.5.0",
+    "@react-native-firebase/perf": "^16.5.0",
     "@react-navigation/drawer": "^5.4.1",
     "@react-navigation/native": "^5.1.5",
     "@react-navigation/stack": "^5.2.10",
