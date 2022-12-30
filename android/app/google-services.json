@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "39092207020",
+    "firebase_url": "https://rocket-linksaver.firebaseio.com",
+    "project_id": "rocket-linksaver",
+    "storage_bucket": "rocket-linksaver.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:39092207020:android:72b0772d52899481438e09",
+        "android_client_info": {
+          "package_name": "com.rocketlinksaver"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "39092207020-cpd58et14pdqm6sk9aotkpdnc1dnvfnc.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDuys3Da0w03w0MLchFgNk1H0Yaa4f-Je8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "39092207020-cpd58et14pdqm6sk9aotkpdnc1dnvfnc.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
