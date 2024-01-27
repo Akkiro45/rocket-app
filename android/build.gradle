@@ -3,10 +3,10 @@ def REACT_NATIVE_VERSION = new File(['node', '--print',"JSON.parse(require('fs')
 
 buildscript {
     ext {
-        buildToolsVersion = "28.0.3"
-        minSdkVersion = 19
-        compileSdkVersion = 32
-        targetSdkVersion = 32
+        buildToolsVersion = "33.0.0"
+        minSdkVersion = 21
+        compileSdkVersion = 33
+        targetSdkVersion = 33
     }
     repositories {
         google()
@@ -27,6 +27,7 @@ allprojects {
         resolutionStrategy {
             // Remove this override in 0.66, as a proper fix is included in react-native itself.
             force "com.facebook.react:react-native:" + REACT_NATIVE_VERSION
+            // force "com.facebook.react:react-native:0.9.0+"
         }
     }
     repositories {
@@ -50,8 +51,8 @@ allprojects {
           project ->
             if (project.hasProperty("android")) {
                 android {
-                    compileSdkVersion = 32
-                    buildToolsVersion = "28.0.3"
+                    compileSdkVersion = 33
+                    buildToolsVersion = "33.0.0"
                 }
             }
         }

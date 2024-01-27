@@ -135,8 +135,8 @@ android {
         applicationId "com.rocketlinksaver"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 13
-        versionName "0.0.4"
+        versionCode 16
+        versionName "0.0.5"
         multiDexEnabled true
     }
     signingConfigs {
@@ -185,6 +185,8 @@ android {
         pickFirst "lib/arm64-v8a/libc++_shared.so"
         pickFirst "lib/x86/libc++_shared.so"
         pickFirst "lib/x86_64/libc++_shared.so"
+        pickFirst 'lib/x86_64/libjsc.so'
+        pickFirst 'lib/arm64-v8a/libjsc.so'
     }
 
     // applicationVariants are e.g. debug, release
